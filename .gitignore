@@ -12,6 +12,7 @@
 
 # Idea
 .idea
+*.iml
 
 # out
 /out
