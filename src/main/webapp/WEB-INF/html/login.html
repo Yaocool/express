@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>登陆 - 高校快递代取系统</title>
+    <link rel="stylesheet" href="/express/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/express/assets/css/login.css"/>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <form class="form-horizontal">
+                <span class="heading text-muted">高校快递代取系统</span>
+                <p class="lead text-primary">用户登录</p>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="email" placeholder="邮箱">
+                </div>
+                <div class="form-group help">
+                    <input type="password" class="form-control" id="password" placeholder="密码">
+                </div>
+                <div class="form-group help">
+                    <input type="text" class="form-control" id="inputVerify" placeholder="验证码">
+                </div>
+                <div class="form-group">
+                    <img src="getVerifyCode" title="看不清，请点我" onclick="refresh(this)" onmouseover="mouseover(this)"/>
+                    <button type="button" class="btn btn-default" onclick="submitLogin()">登录</button>
+                </div>
+                <div class="form-group">
+                    <span class="text-center"><p class="lead">还没有账号？<a href="/express/register">点击立即注册！</a></p></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/express/assets/js/jquery3.3.1.min.js"></script>
+<script src="/express/assets/js/bootstrap.min.js"></script>
+<script src="/express/assets/layer/layer.js"></script>
+<script src="/express/assets/js/http.js"></script>
+<script src="/express/assets/js/login.js"></script>
+</body>
+</html>

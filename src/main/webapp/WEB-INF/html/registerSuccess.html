@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册申请成功 - 高校快递代取系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="/express/assets/css/bootstrap.css"/>
+</head>
+<body>
+<form class="form-horizontal">
+    <div class="form-group">
+        <br><br><br>
+        <span class="text-center">
+            <strong><p class="lead">申请注册成功！请留意您的邮箱，管理员将在7日内审核完毕！</p></strong><br>
+            <br>
+            <strong><p class="lead"><span id="sec" style="color: #00b4ef"></span>秒后进入登录页面，若页面无响应，请点击<a href="javascript:void(0)" onclick="goBack()">返回登录页面</a></p></strong>
+        </span>
+    </div>
+</form>
+<script src="/express/assets/js/jquery3.3.1.min.js"></script>
+<script src="/express/assets/js/bootstrap.min.js"></script>
+<script>
+    /*
+        * @function: 实现数字倒计时然后跳转到对应的页面
+        * @param: obj为显示数字变化的jquery对象
+        * @param: page为要跳转的页面链接地址
+        * @param: num为设置倒计时秒数
+        */
+    var obj = $("#sec");
+    var num = 5;
+    window.setintv=setInterval(function(){
+        num--;
+        obj.text(num);
+        if(num==0){
+            clearInterval(setintv);
+            window.location.href = 'login';
+        }
+    },1000);
+
+    function goBack() {
+        location.href = 'login';
+    }
+
+</script>
+</body>
+</html>

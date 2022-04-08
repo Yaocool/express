@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hevttc.express.mapper.ExpressMapper">
+    <!--查询当前用户当前年的订单成交量-->
+    <select id="queryYearDataByCurrentUser" resultType="edu.hevttc.express.dto.YearDataDto">
+        SELECT DATE_FORMAT(update_date,'%m') month,COUNT(id) COUNT
+        FROM express
+        where staff = #{userId} and status = 3 and YEAR(update_date)=YEAR(NOW())
+        GROUP BY month
+    </select>
+
+    <!--查询当前用户当前月的订单成交量-->
+    <select id="queryCurrentMonthDataByCurrentUser" resultType="edu.hevttc.express.dto.MonthDataDto">
+        SELECT DATE_FORMAT(update_date,'%d') day,COUNT(id) COUNT
+        FROM express
+        where staff = #{userId} and status = 3 and DATE_FORMAT(update_date,'%Y%m')=DATE_FORMAT(CURDATE(),'%Y%m')
+        GROUP BY day
+    </select>
+
+    <!--查询所有用户当前年的订单成交量-->
+    <select id="queryAllUsersOrdersYearData" resultType="edu.hevttc.express.dto.YearDataDto">
+        SELECT DATE_FORMAT(update_date,'%m') month,COUNT(id) COUNT
+        FROM express
+        where status = 3 and YEAR(update_date)=YEAR(NOW())
+        GROUP BY month
+    </select>
+
+
+</mapper>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>订单支付 - 高校快递代取系统</title>
+    <link rel="stylesheet" href="/express/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/express/assets/css/express.css"/>
+</head>
+<body>
+<div class="container">
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-default">
+        <div class="collapse navbar-collapse">
+            <a class="navbar-brand" href="/express/index.html">快递代取信息填写</a>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/express/search">查询中心</a></li>
+                <li><a href="/express/feedback">意见反馈</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- 主体部分 -->
+    <div class="panel">
+        <div class="panel-heading">
+            <h3>您的订单信息已生成，请核验无误后支付订单</h3>
+        </div>
+        <div class="panel-body">
+            <div>
+                <div class="col-sm-6">
+                    <h4>订单信息</h4>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="expressName" class="col-sm-2 control-label">姓名</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="expressName"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="expressTel" class="col-sm-2 control-label">联系电话</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="expressTel"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="expressAddress" class="col-sm-2 control-label">配送地址</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="expressAddress"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="expressMessage" class="col-sm-2 control-label">取件短信</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="expressMessage"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="expressRemark" class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="expressRemark"></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div  class="col-sm-6">
+                    <h4>价格计算</h4>
+                    <blockquote class="pt10">
+                        <p>< 500g/件：2元；< 1kg/件：3元；> 1kg/kg：4元</p>
+                    </blockquote>
+                    <h4>预估价格： <span class="red-span" lang="totalPrice">0.00</span> 元</h4>
+                    <form class="form-horizontal" id="packageForm">
+                    </form>
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-default" onclick="addPackage()">添加包裹</button>
+                        <button type="button" class="btn btn-default" onclick="deletePackage()">删除包裹</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 pt10">
+                <h4>支付方式（在线方式至少付款0.01元）</h4>
+                <form class="form-inline col-sm-4" id="alipayForm" action="/express/payment/alipay" method="post">
+                    <input type="hidden" id="alipayMoney" name="money">
+                    <button class="btn btn-info" type="button" onclick="alipay()">支付宝支付</button>
+                </form>
+                <form class="form-inline col-sm-4" id="wechatForm" action="/express/payment/wechat" method="post">
+                    <button class="btn btn-default" type="button" disabled>微信支付</button>
+                </form>
+                <form class="form-inline col-sm-2">
+                    <button class="btn btn-default" type="button" onclick="OfflinePay()">线下支付</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/express/assets/js/jquery3.3.1.min.js"></script>
+<script src="/express/assets/js/bootstrap.min.js"></script>
+<script src="/express/assets/layer/layer.js"></script>
+<script src="/express/assets/js/http.js"></script>
+<script src="/express/assets/js/payment.js"></script>
+<script>
+    var express,total=0;
+    $(function () {
+        sendJson("get", "/express/payment/express", {}, false, function (res) {
+            if (!res.status) {
+                layer.msg(res.info,{icon:2});
+            } else {
+                express = res.data;
+                $("#expressName").text(express.name);
+                $("#expressTel").text(express.tel);
+                $("#expressAddress").text(express.address);
+                $("#expressMessage").text(express.message);
+                $("#expressRemark").text(express.remark);
+            }
+        }, function () {
+            layer.msg("未知错误",{icon:2});
+        });
+    });
+</script>
+</body>
+</html>

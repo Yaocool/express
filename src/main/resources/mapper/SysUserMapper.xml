@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hevttc.express.mapper.SysUserMapper">
+    <!--查询当前年的所有用户增长量-->
+    <select id="queryCurrentYearUsersCount" resultType="edu.hevttc.express.dto.YearDataDto">
+        SELECT DATE_FORMAT(create_date,'%m') month,COUNT(id) COUNT
+        FROM sys_user
+        where role_id=1 and YEAR(create_date)=YEAR(NOW())
+        GROUP BY month
+    </select>
+
+</mapper>

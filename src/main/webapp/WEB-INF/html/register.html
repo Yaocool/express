@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>注册 - 高校快递代取系统</title>
+    <link rel="stylesheet" href="/express/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/express/assets/css/bootstrap-fileinput.css"/>
+    <link rel="stylesheet" href="/express/assets/css/fileinput.css"/>
+    <link rel="stylesheet" href="/express/assets/css/fileinput-rtl.css"/>
+    <link rel="stylesheet" href="/express/assets/css/register.css"/>
+</head>
+<body>
+
+<div class="container">
+    <form enctype="multipart/form-data" method="post">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <div class="form-horizontal">
+                <span class="heading text-muted">高校快递代取系统</span>
+                <p class="lead text-primary">用户注册</p>
+
+                <div class="form-group help">
+                    <input type="text" class="form-control" id="email" placeholder="邮箱">
+                </div>
+                <div class="form-group help">
+                    <input type="text" class="form-control" id="tel" placeholder="电话">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="username" placeholder="用户名">
+                </div>
+                <div class="form-group help">
+                    <input type="password" class="form-control" id="password" placeholder="密码">
+                </div>
+            </div>
+        </div>
+
+        <!--文件上传-->
+            <div class="form-group col-md-offset-3 col-md-6">
+                <input id="uploadPicture" name="file" type="file" multiple="true" class="file-loading">
+            </div>
+
+        <div class="col-md-offset-3 col-md-6">
+            <div class="form-horizontal">
+                <div class="form-group help">
+                    <input type="text" class="form-control" id="inputVerify" placeholder="验证码">
+                </div>
+                <div class="form-group">
+                    <img src="getVerifyCode" title="看不清，请点我" onclick="refresh(this)" onmouseover="mouseover(this)"/>
+                    <button type="button" class="btn btn-default" onclick="submitRegister()">注册</button>
+                </div>
+                <div class="form-group">
+                    <span class="text-center"><p class="lead">已有账号？<a href="/express/login">点击立即登录！</a></p></span>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </form>
+    </div>
+
+</div>
+
+<script src="/express/assets/js/jquery3.3.1.min.js"></script>
+<script src="/express/assets/js/login.js"></script>
+<script src="/express/assets/js/sortable.js"></script>
+<script src="/express/assets/js/purify.js"></script>
+<script src="/express/assets/js/fileinput.js"></script>
+<script src="/express/assets/js/bootstrap.min.js"></script>
+<script src="/express/assets/js/fa.js"></script>
+<script src="/express/assets/js/zh.js"></script>
+<script src="/express/assets/layer/layer.js"></script>
+<script src="/express/assets/js/http.js"></script>
+<script src="/express/assets/js/checkFormatFunction.js"></script>
+<script>
+    $(function () {
+        $("#uploadPicture").fileinput({
+            uploadUrl: "/express/uploadImgs",
+            previewFileType: "image",
+            uploadAsync: false,   // 禁止异步提交
+            showCaption: false, // 是否显示选择文件框
+            allowedFileExtensions: ["png", "jpg", "jpeg", "ico", "bmp", "gif"],
+            maxFileCount: 2,
+            maxFileSize: 1024,
+            showBrowse: true,
+            showUpload:true,   // 是否显示上传按钮
+            removeFromPreviewOnError: true,
+            dropZoneTitle: '拖拽校园一卡通人像面和本人近期证件照到这里...',
+            browseLabel: "选择图片",
+            uploadClass: 'btn btn-info',  //
+            uploadLabel: '上传',  //
+            removeClass: "btn btn-danger",
+            autoReplace: true,
+            removeLabel: "移除",
+            msgSizeTooLarge: '图片文件太大！请上传小于1M的图片',
+            msgFilesTooMany: "选择上传的文件数量为({n}) 超过允许的最大数值({m})！",
+            msgUploadEnd: '图片上传成功！',
+            msgUploadBegin: '初始化中...',
+            msgZoomModalHeading: '图片详情预览',
+            msgInvalidFileExtension: '非法文件扩展名 "{name}"！ 仅支持 "{extensions}" 的文件扩展名！',
+            layoutTemplates: {
+                actionUpload:'',
+                indicator:'',
+            }
+        }).on('fileerror', function (event, data, msg) {
+            layer.msg("图片上传失败!"+msg, {icon:2});
+        }).on('fileuploaded', function (event, data) {
+            $("#picName").val(data.msg.info);
+            $('#uploadPicture').fileinput('disable');
+        }).on('fileclear', function (event) {
+            layer.msg("图片被清除啦!", {icon:2});
+        });
+    });
+
+    // 注册
+    function submitRegister() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var email = $("#email").val();
+        var emailReg = /^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/;
+        var telReg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
+        var tel = $("#tel").val();
+        if(username === "" || password === "" || email === "" || tel === "") {
+            layer.msg("用户名、密码、邮箱、手机号均不能为空",{icon:0});
+            return false;
+        } else if (!emailReg.test(email)) {
+            layer.msg("邮箱格式不正确",{icon:0});
+            return false;
+        } else if (!telReg.test(tel)) {
+            layer.msg("手机号格式不正确",{icon:0});
+            return false;
+        } else if (username.length>10 || username.length<2) {
+            layer.msg("用户名需在2-10个字符之间",{icon:0});
+            return false;
+        } else if (password.length>16 || password.length<6) {
+            layer.msg("密码需在6-16个字符之间且不能为汉字",{icon:0});
+            return false;
+        }
+        sendJson("post", "/express/checkVerifyCode", {"data": $("#inputVerify").val()}, false, function (res) {
+            if (!res.status) {
+                layer.msg(res.info,{icon:2});
+            } else {
+                sendJson("post", "/express/register", {"username":username,"password":password,"email":email,"tel":tel}, false, function (res) {
+                    if (!res.status) {
+                        layer.msg(res.info,{icon:2});
+                    } else {
+                        window.location.href=res.data;
+                    }
+                }, function () {
+                    layer.msg("未知错误",{icon:2});
+                });
+            }
+        }, function () {
+            layer.msg("验证码错误",{icon:2});
+        });
+    }
+</script>
+</body>
+</html>
